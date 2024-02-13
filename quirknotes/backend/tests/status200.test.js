@@ -84,37 +84,122 @@ describe('generating note tests', () => {
 })
 
 
+describe('need one note tests', () => {
+    let noteID = ''
+
+    beforeAll(async () => {
+        const title = "NoteTitleTest";
+        const content = "NoteTitleContent";
+      
+        const postNoteRes = await fetch(`${SERVER_URL}/postNote`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title: title,
+            content: content,
+          }),
+        });
+
+        const postNoteBody = await postNoteRes.json();
+        noteID = postNoteBody.insertedId
+    })
+
+    afterAll(async () => {
+        await fetch(`http://localhost:4000/deleteAllNotes`, {
+        method: "DELETE",
+        headers: {
+            "Content-Type": "application/json"
+        },
+      })
+    })
+
+    test("/patchNote - Patch with content and title", async () => {
+        const note = {title: 'newTitle', content: 'newContent', _id: noteID}
+
+        const patchNoteRes = await fetch(`http://localhost:4000/patchNote/${note._id}`,
+            {method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({title: note.title, content: note.content}
+        )})
+
+        const patchNoteBody = await patchNoteRes.json()
+
+        expect(patchNoteRes.status).toBe(200)
+        expect(patchNoteBody.response).toBe(`Document with ID ${noteID} patched.`)
+    });
+
+    test("/patchNote - Patch with just title", async () => {
+        const note = {title: 'newTitle', _id: noteID}
+
+        const patchNoteRes = await fetch(`http://localhost:4000/patchNote/${note._id}`,
+            {method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({title: note.title}
+        )})
+
+        const patchNoteBody = await patchNoteRes.json()
+
+        expect(patchNoteRes.status).toBe(200)
+        expect(patchNoteBody.response).toBe(`Document with ID ${noteID} patched.`)
+    });
+
+    test("/patchNote - Patch with just content", async () => {
+        const note = {content: 'newContent', _id: noteID}
+
+        const patchNoteRes = await fetch(`http://localhost:4000/patchNote/${note._id}`,
+            {method: "PATCH",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({content: note.content}
+        )})
+
+        const patchNoteBody = await patchNoteRes.json()
+
+        expect(patchNoteRes.status).toBe(200)
+        expect(patchNoteBody.response).toBe(`Document with ID ${noteID} patched.`)
+    });
+
+    test("/updateNoteColor - Update color of a note to red (#FF0000)", async () => {
+        const updateColorRes = await fetch(`http://localhost:4000/updateNoteColor/${noteID}`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ color: '#FF0000' }),
+        })
+
+        const updateColorBody = await updateColorRes.json()
+
+        expect(updateColorRes.status).toBe(200)
+        expect(updateColorBody.response).toBe('Note color updated successfully.')
+    });
+})
+
+
+
+
 test("/deleteNote - Delete a note", async () => {
     // Code here
     expect(false).toBe(true);
 });
 
-test("/patchNote - Patch with content and title", async () => {
-    // Code here
-    expect(false).toBe(true);
-});
-
-test("/patchNote - Patch with just title", async () => {
-    // Code here
-    expect(false).toBe(true);
-});
-
-test("/patchNote - Patch with just content", async () => {
-    // Code here
-    expect(false).toBe(true);
-});
 
 test("/deleteAllNotes - Delete one note", async () => {
     // Code here
     expect(false).toBe(true);
 });
 
+
+
 test("/deleteAllNotes - Delete three notes", async () => {
     // Code here
     expect(false).toBe(true);
 });
 
-test("/updateNoteColor - Update color of a note to red (#FF0000)", async () => {
-    // Code here
-    expect(false).toBe(true);
-});
