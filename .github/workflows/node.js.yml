@@ -31,7 +31,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
 
-      - name:
+      - name: 'Initialize MongoDB'
         uses: MongoCamp/mongodb-github-action@1.2.0
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
