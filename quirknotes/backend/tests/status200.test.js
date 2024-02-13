@@ -66,8 +66,10 @@ test("/getAllNotes - Return list of two notes for getAllNotes", async () => {
 
     const getAllNotesRes = await fetch(`${SERVER_URL}/getAllNotes`);
 
+    const notes = await getAllNotesRes.json()
+
     expect(getAllNotesRes.status).toBe(200);
-    expect(getAllNotesRes.notes.length).toBe(2);
+    expect(notes.response.length).toBe(2);
 });
 
 test("/deleteNote - Delete a note", async () => {
