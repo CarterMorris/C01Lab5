@@ -32,7 +32,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name:
-        uses: MongoCamp/mongodb-github-action@1.0.0
+        uses: MongoCamp/mongodb-github-action@1.2.0
         with:
           mongodb-version: ${{ matrix.mongodb-version }}
       
