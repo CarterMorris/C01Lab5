@@ -30,7 +30,7 @@ test("/getAllNotes - Return list of zero notes for getAllNotes", async () => {
     const getAllNotesRes = await fetch(`${SERVER_URL}/getAllNotes`);
 
     expect(getAllNotesRes.status).toBe(200);
-    expect(getAllNotesRes.notes.length()).toBe(0);
+    expect(getAllNotesRes.response.length()).toBe(0);
 });
   
 test("/getAllNotes - Return list of two notes for getAllNotes", async () => {
