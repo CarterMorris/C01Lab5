@@ -84,7 +84,7 @@ describe('generating note tests', () => {
 })
 
 
-describe('need one note tests', () => {
+describe('need one note all tests', () => {
     let noteID = ''
 
     beforeAll(async () => {
@@ -183,23 +183,93 @@ describe('need one note tests', () => {
 })
 
 
+describe('need one note each tests', () => {
+    let noteID = ''
+
+    beforeEach(async () => {
+        const title = "NoteTitleTest";
+        const content = "NoteTitleContent";
+      
+        const postNoteRes = await fetch(`${SERVER_URL}/postNote`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            title: title,
+            content: content,
+          }),
+        });
+
+        const postNoteBody = await postNoteRes.json();
+        noteID = postNoteBody.insertedId
+    })
+
+    test("/deleteNote - Delete a note", async () => {
+        const deleteNoteRes = await fetch(`http://localhost:4000/deleteNote/${noteID}`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        });
+
+        const deleteNoteBody = await deleteNoteRes.json()
+
+        expect(deleteNoteRes.status).toBe(200)
+        expect(deleteNoteBody.response).toBe(`Document with ID ${noteID} deleted.`)
+    });
+
+    test("/deleteAllNotes - Delete one note", async () => {
+        const deleteAllNotesRes = await fetch(`http://localhost:4000/deleteAllNotes`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        });
+
+        const deleteAllNotesBody = await deleteAllNotesRes.json()
+
+        expect(deleteAllNotesRes.status).toBe(200)
+        expect(deleteAllNotesBody.response).toBe(`1 note(s) deleted.`)
+    });
+})
 
 
-test("/deleteNote - Delete a note", async () => {
-    // Code here
-    expect(false).toBe(true);
-});
+describe('need 3 notes', () => {
+    beforeAll(async () => {
+        const title = "NoteTitleTest";
+        const content = "NoteTitleContent";
+    
+        for(let i = 0; i < 3; i++){
+            const postNoteRes = await fetch(`${SERVER_URL}/postNote`, {
+                method: "POST",
+                headers: {
+                "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                title: title,
+                content: content,
+                }),
+            });
+        }
+        
+    })
+
+    test("/deleteAllNotes - Delete three notes", async () => {
+        const deleteAllNotesRes = await fetch(`http://localhost:4000/deleteAllNotes`, {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json"
+            },
+        });
+
+        const deleteAllNotesBody = await deleteAllNotesRes.json()
+
+        expect(deleteAllNotesRes.status).toBe(200)
+        expect(deleteAllNotesBody.response).toBe(`3 note(s) deleted.`)
+    });
+})
 
 
-test("/deleteAllNotes - Delete one note", async () => {
-    // Code here
-    expect(false).toBe(true);
-});
 
-
-
-test("/deleteAllNotes - Delete three notes", async () => {
-    // Code here
-    expect(false).toBe(true);
-});
 
