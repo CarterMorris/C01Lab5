@@ -37,10 +37,6 @@ jobs:
           mongodb-version: ${{ matrix.mongodb-version }}
       
       - run: npm i
-      - run: mkdir data
-      - run: mkdir data/db
-      - run: npm i mongod
-      - run: mongod --dbpath=./data/db
       - run: npm run dev
       - run: npm test
 
